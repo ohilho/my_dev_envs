@@ -52,5 +52,3 @@ WORKDIR /root/workspace
 
 ## expose port for code-server: 8080
 EXPOSE 8080
-
-CMD ["/root/entry.sh"]
