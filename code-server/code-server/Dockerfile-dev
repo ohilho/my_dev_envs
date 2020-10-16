@@ -1,0 +1,56 @@
+FROM ubuntu:latest
+
+## install VSCODE dependancies
+RUN apt-get update
+RUN apt-get install -y \
+    zsh \
+	openssl \
+	net-tools \
+	git \
+	locales \
+	sudo \
+	dumb-init \
+	vim \
+	curl \
+	wget
+
+## development env setting
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt-get install -y \
+    build-essential \
+    python3 \
+    cmake 
+
+## install oh-my-zsh
+RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohilho/initialize_script/master/ohmyzsh/ohmyzsh.sh)"
+
+## install pip
+WORKDIR /tmp
+RUN apt-get install -y python3-distutils
+RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+RUN python3 ./get-pip.py
+
+##install code-server
+RUN curl -fsSL https://code-server.dev/install.sh | sh -s -- --dry-run
+RUN curl -fsSL https://code-server.dev/install.sh | sh
+
+## setup code-server configuration
+WORKDIR /root/.config/code-server
+COPY ./config.yaml ./config.yaml
+COPY ./entry.sh /root/entry.sh
+RUN chmod +x /root/entry.sh
+
+## initialization
+WORKDIR /tmp
+RUN touch first_run
+
+RUN git clone https://github.com/rise-lab-skku/src_generate_script.git "/root/.custom_tools/psrcgen"
+RUN echo "alias psrcgen=\"source /root/.custom_tools/psrcgen/psrcgen.sh\"" >> /root/.zshrc
+
+## workspace
+WORKDIR /root/workspace
+
+## expose port for code-server: 8080
+EXPOSE 8080
+
+CMD ["/root/entry.sh"]

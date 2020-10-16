@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: ./code-server/Dockerfile-dev
+    ports:
+      - "8080:8080"
+    command: 
+      - "/root/entry.sh"
+    volumes:
+      - source:/workspace # workspace dir
+    restart: always
+
+volumes:
+  source:
+
