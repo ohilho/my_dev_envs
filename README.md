@@ -20,7 +20,6 @@ tensorflow with gpu, keras, pytorch is installed via pip.
 #### ports
 - port 8888 is open for the web browsers.
 
-
 ### Service: tensorboard
 This is tensorboard. You can review your machine learning result with tensorboard.
 #### volumes
@@ -28,3 +27,11 @@ This is tensorboard. You can review your machine learning result with tensorboar
 - "ml-server-log" is mounted at "/tf/log"
 #### ports
 - port 6006 is open for the web browsers.
+
+
+## code-server
+Dockerized visual studio code on web. The original project is code-server on the github "https://github.com/cdr/code-server"
+#### volumes
+- "code-server-source" is mounted at "/workspace"
+#### ports
+- port 8080 is open for the web browsers.
