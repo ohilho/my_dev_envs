@@ -36,8 +36,8 @@ RUN curl -fsSL https://code-server.dev/install.sh | sh
 
 ## setup code-server configuration
 WORKDIR /root/.config/code-server
-COPY ./config.yaml ./config.yaml
-COPY ./entry.sh /root/entry.sh
+ADD ./config.yaml ./config.yaml
+ADD ./entry.sh /root/entry.sh
 RUN chmod +x /root/entry.sh
 
 ## initialization
