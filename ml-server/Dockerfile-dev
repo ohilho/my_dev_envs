@@ -1,7 +1,7 @@
 FROM tensorflow/tensorflow:latest-gpu-jupyter
 
 # install keras and torch
-RUN python3 -m pip install --no-cache-dir keras torch
+RUN python3 -m pip install --no-cache-dir keras torch torchvision
 
 # port open for tensorboard server
 EXPOSE 6006
