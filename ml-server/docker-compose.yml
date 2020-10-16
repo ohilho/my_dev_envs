@@ -1,0 +1,34 @@
+version: "3"
+
+services:
+  ml_jupyter:
+    build:
+      context: .
+      dockerfile: ./tf-gpu-jupyter/Dockerfile-dev
+    ports:
+      - "8888:8888"
+    volumes:
+      - ml-source:/tf # notebook dir
+      - ml-log:/tf/log
+    restart: always
+
+  tensorboard:
+    build:
+      context: .
+      dockerfile: ./tf-gpu-jupyter/Dockerfile-dev
+    ports:
+      - "6006:6006"
+    command: 
+      - tensorboard
+      - --logdir=/tf/log
+      - --port=6006
+      - --host=0.0.0.0
+    volumes:
+      - ml-source:/tf # notebook dir
+      - ml-log:/tf/log # notebook dir
+    restart: always
+
+volumes:
+  ml-source:
+  ml-log:
+
