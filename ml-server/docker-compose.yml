@@ -10,6 +10,7 @@ services:
     volumes:
       - source:/tf # notebook dir
       - log:/tf/log
+      - /media/ohilho/Data/dataset:/tf/dataset
     restart: always
 
   tensorboard:
