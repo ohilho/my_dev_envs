@@ -4,7 +4,7 @@ services:
   jupyter:
     build:
       context: .
-      dockerfile: ./tf-gpu-jupyter/Dockerfile-dev
+      dockerfile: ./Dockerfile-dev
     ports:
       - "8888:8888"
     volumes:
@@ -16,7 +16,7 @@ services:
   tensorboard:
     build:
       context: .
-      dockerfile: ./tf-gpu-jupyter/Dockerfile-dev
+      dockerfile: ./Dockerfile-dev
     ports:
       - "6006:6006"
     command: 
