@@ -1,0 +1,32 @@
+version: "3"
+
+services:
+  pytorch:
+    build:
+      context: .
+      dockerfile: ./Dockerfile-dev
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    command: 
+      - /usr/bin/zsh
+    volumes:
+      - source:/repos
+  
+  visdom:
+    build:
+      context: .
+      dockerfile: ./Dockerfile-dev
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    ports:
+      - "8097:8097"
+    command: 
+      - visdom
+    restart: always
+
+      
+volumes:
+  source:
+
