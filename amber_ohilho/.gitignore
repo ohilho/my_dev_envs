@@ -1,0 +1,8 @@
+*
+.env
+!.gitignore
+!docker-compose.yml
+!Dockerfile-dev
+!README.md
+!run.sh
+!template.env

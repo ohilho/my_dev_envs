@@ -18,6 +18,7 @@ RUN chmod 755 run.sh
 COPY $SSH_KEY_PATH ssh_key.pub
 RUN mkdir -p /root/.ssh
 RUN cat ssh_key.pub >> /root/.ssh/authorized_keys
+RUN rm ssh_key.pub
 
 EXPOSE 22
 EXPOSE 8097
