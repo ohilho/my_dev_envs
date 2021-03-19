@@ -1,12 +1,23 @@
 FROM pytorch/pytorch:1.8.0-cuda11.1-cudnn8-devel
 
+# need a ssh public key to access this container.
+ARG SSH_KEY_PATH
+
 # install pytorch and visdom
 RUN python3 -m pip install --no-cache-dir torch torchvision visdom
 
 # install zsh curl wget git
-RUN apt update && apt install git zsh wget curl -y
+RUN apt update && apt install git zsh wget curl ssh -y && systemctl enable ssh.service
+
 # customize zsh with oh-my-zsh 
 RUN wget https://raw.githubusercontent.com/ohilho/initialize_script/master/ohmyzsh/ohmyzsh.sh && /bin/bash ohmyzsh.sh
+COPY run.sh run.sh
+RUN chmod 755 run.sh
 
-# port open for visdom server
+# copy ssh public key 
+COPY $SSH_KEY_PATH ssh_key.pub
+RUN mkdir -p /root/.ssh
+RUN cat ssh_key.pub >> /root/.ssh/authorized_keys
+
+EXPOSE 22
 EXPOSE 8097

@@ -5,28 +5,18 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile-dev
+      args: 
+      - SSH_KEY_PATH=${SSH_KEY_PATH}
     runtime: nvidia
-    environment:
-      - NVIDIA_VISIBLE_DEVICES=all
+    ports:
+      - "${PORT_SSH}:22"
+      - "${PORT_VISDOM}:8097"
     command: 
-      - /usr/bin/zsh
+      - /workspace/run.sh
     volumes:
       - source:/repos
-  
-  visdom:
-    build:
-      context: .
-      dockerfile: ./Dockerfile-dev
-    runtime: nvidia
-    environment:
-      - NVIDIA_VISIBLE_DEVICES=all
-    ports:
-      - "8097:8097"
-    command: 
-      - visdom
     restart: always
-
-      
+  
 volumes:
   source:
     driver: local
