@@ -1,0 +1,12 @@
+matplotlib==3.3.4
+numpy==1.19.5
+opencv-python==4.5.1.48
+Pillow==8.1.2
+cython
+scikit-learn==0.24.1
+scipy==1.5.4
+torch==1.7.1
+torchvision==0.8.2
+tqdm==4.59.0
+visdom==0.1.8.9
+pycocotools==2.0.2

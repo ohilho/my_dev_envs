@@ -1,18 +1,22 @@
-FROM pytorch/pytorch:1.8.0-cuda11.1-cudnn8-devel
+#FROM pytorch/pytorch:1.8.0-cuda11.1-cudnn8-devel
+FROM nvidia/cuda:11.2.2-cudnn8-runtime-ubuntu18.04
 
 # need a ssh public key to access this container.
 ARG SSH_KEY_PATH
 
-# install pytorch and visdom
-RUN python3 -m pip install --no-cache-dir torch torchvision visdom
-
 # install zsh curl wget git
-RUN apt update && apt install git zsh wget curl ssh -y && systemctl enable ssh.service
+RUN apt update && apt install build-essential git zsh wget curl ssh tmux python3-distutils python3-dev libgl1-mesa-glx -y && systemctl enable ssh.service
+RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && python3 get-pip.py
+
+COPY copy/ /root/
+RUN chmod 755 /root/run.sh
+
+# install requirements
+RUN python3 -m pip install -r /root/requirements.txt
+
 
 # customize zsh with oh-my-zsh 
 RUN wget https://raw.githubusercontent.com/ohilho/initialize_script/master/ohmyzsh/ohmyzsh.sh && /bin/bash ohmyzsh.sh
-COPY run.sh run.sh
-RUN chmod 755 run.sh
 
 # copy ssh public key 
 COPY $SSH_KEY_PATH ssh_key.pub

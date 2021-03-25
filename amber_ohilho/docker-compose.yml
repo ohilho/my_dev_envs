@@ -12,9 +12,10 @@ services:
       - "${PORT_SSH}:22"
       - "${PORT_VISDOM}:8097"
     command: 
-      - /workspace/run.sh
+      - /root/run.sh
     volumes:
       - source:/repos
+    ipc: "host"
     restart: always
   
 volumes:

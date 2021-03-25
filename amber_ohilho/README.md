@@ -1,9 +1,96 @@
-# USE docker-compose and tmux
+# docker-compose configuration for PyTorch 
+This is a docker-compose configuration for PyTorch users. You will have a docker container running Visdom server. A volume is mounted on this container.
 
-pytorch 서비스는 shell 위에서 작동하기 때문에 접속하는 순서가
-ssh > tmux > docker 순으로 되어야 한다.
-ssh > docker > tmux 순으로 되면 복잡해진다.
 
-tmux attach -t ohilho
-cd amber_ohilho
-docker-compose up -d visdom
+pip packages provided on this image is given in copy/requirements.txt 
+```
+matplotlib==3.3.4
+numpy==1.19.5
+opencv-python==4.5.1.48
+Pillow==8.1.2
+cython
+scikit-learn==0.24.1
+scipy==1.5.4
+torch==1.7.1
+torchvision==0.8.2
+tqdm==4.59.0
+visdom==0.1.8.9
+pycocotools==2.0.2
+```
+apt packages provided on this image is given in Dockerfile-dev
+- build-essential
+- git
+- zsh
+- wget
+- curl
+- ssh
+- tmux
+- python3-distutils 
+- python3-dev
+- libgl1-mesa-glx
+
+
+## build
+### Prepare an ssh key for the container
+this is for accessing the docker container. you should have at least one ssh key pair to access this container. Following command is enough.
+```
+$ ssh-keygen -t rsa -C "your comment"
+```
+
+### Writing .env file
+This repository has a template.env file in repo root dir. you should replace all values of environment variables and rename that file into '.env', which is the default name of the docker environment variable file.
+```
+NVIDIA_VISIBLE_DEVICES=all
+PORT_SSH=00000
+PORT_VISDOM=00000
+SSH_KEY_PATH=your_ssh_public_key.pub
+```
+- NVIDIA_VISIBLE_DEVICES is GPU device indices that you want to make visible to the container based on this image. this is "all" on typical cases.
+- PORT_SSH is a secure shell service port.
+- PORT_VISDOM is Visdom web service port.
+- SSH_KEY_PATH is your ssh public key file path.
+
+### Volume
+In th docker-compose.yml file, you will see a volume definition. 
+
+```
+volumes:
+  source:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ${HOME}/repos
+```
+You can set the device attribute to any directory you want.
+
+### Building the Image
+This is the last step to build an image. 
+```
+$ docker-compose build
+```
+
+## Create A container
+If you want to create a container and to run it as a daemon, run following command. 
+```
+$ docker-compose up -d
+```
+Or, If you want to create a container and to run it on the shell, run following command. 
+```
+$ docker-compose up
+```
+
+## Access to the container
+Create a "config" file in your .ssh directory. (e.g.  ~/.ssh/config )
+This is an example of configuration.
+```
+Host docker_pytorch
+    Port 00000 #port you set in the .env file
+    HostName 000.000.000.000 # container_hosting_server
+    User root # this is fixed
+    IdentityFile your_private_key_path
+```
+Save it and access ssh with your key.
+```
+$ ssh docker_pytorch
+```
