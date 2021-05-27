@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  tensorflow:
+    build:
+      context: .
+      dockerfile: ./Dockerfile-dev
+      args:
+        - SSH_KEY_PATH=${SSH_KEY_PATH}
+    ipc: "host"
+    runtime: nvidia
+    ports: #local : container
+      - "51522:22" # ssh
+      - "6006:6006" # tensorboard
+      - "8888:8888" # jupytor
+    command:
+      - /root/run.sh
+    volumes:
+      - source:/repos # notebook dir
+    restart: always
+
+volumes:
+  source:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ${HOME}/repos
