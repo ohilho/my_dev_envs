@@ -1,0 +1,17 @@
+*
+.env
+!.gitignore
+!docker-compose.yml
+!Dockerfile-dev
+!README.md
+!run.sh
+!template.env
+
+!copy
+!copy/requirements.txt
+!copy/.jupyter
+!copy/.jupyter/**
+!copy/run.sh
+# ignore keys
+copy/pub/**
+!copy/ssh_config.sh

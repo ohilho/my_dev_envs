@@ -1,0 +1,47 @@
+version: "3"
+
+services:
+  pytorch:
+    build:
+      context: .
+      dockerfile: ./Dockerfile-dev
+    runtime: nvidia
+    ports:
+      - "${PORT_SSH}:22"
+      - "${PORT_VISDOM}:8097"
+      - "${PORT_JUPYTER}:8888"
+    command: 
+      - "/root/run.sh"
+    #   - "/bin/bash"
+    # stdin_open: true # docker run -i
+    # tty: true        # docker run -t
+    volumes:
+      - source:/repos
+      - dataset:/repos/dataset
+    ipc: "host"
+    restart: always
+    
+    # restrict number of gpus per container
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+  
+volumes:
+
+  source:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ${HOME}/repos
+
+  dataset:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: /media/${USER}/Data/dataset
