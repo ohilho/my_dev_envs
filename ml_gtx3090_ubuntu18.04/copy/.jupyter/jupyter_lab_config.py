@@ -193,7 +193,7 @@ c.ServerApp.allow_origin = "*"
 #  token login mechanism.
 #
 #  This can be set to false to prevent changing password from the UI/API.
-# c.ServerApp.allow_password_change = True
+c.ServerApp.allow_password_change = True
 
 ## Allow requests where the Host header doesn't point to a local server
 #
@@ -207,10 +207,10 @@ c.ServerApp.allow_origin = "*"
 #
 #  Local IP addresses (such as 127.0.0.1 and ::1) are allowed as local, along
 #  with hostnames configured in local_hostnames.
-# c.ServerApp.allow_remote_access = False
+c.ServerApp.allow_remote_access = True
 
 ## Whether to allow the user to run the server as root.
-# c.ServerApp.allow_root = False
+c.ServerApp.allow_root = True
 
 ## " Require authentication to access prometheus metrics.
 # c.ServerApp.authenticate_prometheus = True
@@ -319,7 +319,7 @@ c.ServerApp.default_url = "/repos"
 # c.ServerApp.iopub_msg_rate_limit = 1000
 
 ## The IP address the Jupyter server will listen on.
-# c.ServerApp.ip = 'localhost'
+c.ServerApp.ip = "0.0.0.0"
 
 ## Supply extra arguments that will be passed to Jinja environment.
 # c.ServerApp.jinja_environment_options = {}

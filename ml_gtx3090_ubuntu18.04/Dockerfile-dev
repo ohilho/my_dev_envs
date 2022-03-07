@@ -23,6 +23,7 @@ RUN chmod 755 /root/ssh_config.sh
 RUN bash -c /root/ssh_config.sh
 
 # copy jupyter configuration
+# RUN echo 0
 COPY copy/.jupyter /root/.jupyter
 
 # copy entry script
